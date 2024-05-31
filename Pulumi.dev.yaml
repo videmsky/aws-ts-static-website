@@ -1,5 +1,5 @@
 environment:
-- dev
+- lotctl
 config:
   aws-ts-static-website:errorDocument: error.html
   aws-ts-static-website:indexDocument: index.html
