@@ -1,0 +1,7 @@
+environment:
+- dev
+config:
+  aws-ts-static-website:errorDocument: error.html
+  aws-ts-static-website:indexDocument: index.html
+  aws-ts-static-website:path: ./www
+  aws:region: us-west-2
