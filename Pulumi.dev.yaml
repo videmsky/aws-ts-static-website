@@ -1,7 +1,9 @@
-environment:
-- lotctl
 config:
+  aws-ts-static-website:domain: pulumi-ce.team
   aws-ts-static-website:errorDocument: error.html
   aws-ts-static-website:indexDocument: index.html
   aws-ts-static-website:path: ./www
+  aws-ts-static-website:subdomain: www
   aws:region: us-west-2
+environment:
+  - lotctl
