@@ -1,6 +1,15 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as synced_folder from "@pulumi/synced-folder";
+import * as service from "@pulumi/pulumiservice";
+import { local } from "@pulumi/command";
+
+const org = pulumi.getOrganization()
+const project = pulumi.getProject()
+const stack = pulumi.getStack()
+const gitOrigin = new local.Command("git_origin", {
+  create: 'git config --get remote.origin.url',
+}).stdout
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
@@ -10,6 +19,30 @@ const errorDocument = config.get("errorDocument") || "error.html";
 const domain = config.require("domain");
 const subdomain = config.require("subdomain");
 const domainName = `${subdomain}.${domain}`;
+
+const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
+  organization: org,
+  project: project,
+  stack: stack,
+  operationContext: {
+    preRunCommands: ["pulumi about"]
+  },
+  sourceContext: {
+    git: {
+      branch: "main",
+      repoUrl: gitOrigin,
+      repoDir: ""
+    }
+  }
+});
+
+const driftSchedule = new service.DriftSchedule("driftSchedule", {
+  organization: org,
+  project: project,
+  stack: stack,
+  scheduleCron: "0 * * * *",
+  autoRemediate: true
+}, {dependsOn: [deploymentSettings]})
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("lotctl-bucket", {

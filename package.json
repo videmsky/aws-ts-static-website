@@ -6,7 +6,9 @@
     },
     "dependencies": {
         "@pulumi/aws": "^6.0.2",
-        "@pulumi/synced-folder": "^0.0.9",
-        "@pulumi/pulumi": "^3.113.0"
+        "@pulumi/command": "^0.11.1",
+        "@pulumi/pulumi": "^3.113.0",
+        "@pulumi/pulumiservice": "^0.21.0",
+        "@pulumi/synced-folder": "^0.0.9"
     }
 }
