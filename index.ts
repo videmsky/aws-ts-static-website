@@ -25,12 +25,16 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
   project: project,
   stack: stack,
   operationContext: {
-    preRunCommands: ["pulumi about"]
+    preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
+		options: {
+			skipInstallDependencies: true,
+		},
   },
   sourceContext: {
     git: {
       branch: "refs/heads/main",
-      repoUrl: gitOrigin,
+      repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
+			repoDir: "",
     }
   }
 });
@@ -41,6 +45,13 @@ const driftSchedule = new service.DriftSchedule("driftSchedule", {
   stack: stack,
   scheduleCron: "0 * * * *",
   autoRemediate: true
+}, {dependsOn: [deploymentSettings]})
+
+const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
+  organization: org,
+  project: project,
+  stack: stack,
+  timestamp: "2024-06-06T00:00:00Z"
 }, {dependsOn: [deploymentSettings]})
 
 // Create an S3 bucket and configure it as a website.
