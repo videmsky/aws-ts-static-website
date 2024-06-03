@@ -31,7 +31,7 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
     git: {
       branch: "main",
       repoUrl: gitOrigin,
-      repoDir: ""
+      repoDir: "aws-ts-static-website"
     }
   }
 });
