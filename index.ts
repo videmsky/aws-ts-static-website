@@ -7,9 +7,9 @@ import { local } from "@pulumi/command";
 const org = pulumi.getOrganization()
 const project = pulumi.getProject()
 const stack = pulumi.getStack()
-const gitOrigin = new local.Command("git_origin", {
-  create: 'git config --get remote.origin.url',
-}).stdout
+// const gitOrigin = new local.Command("git_origin", {
+//   create: 'git config --get remote.origin.url',
+// }).stdout
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
@@ -34,7 +34,7 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
     git: {
       branch: "refs/heads/main",
       repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
-			repoDir: "",
+			repoDir: "aws-ts-static-website",
     }
   }
 });
