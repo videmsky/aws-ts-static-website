@@ -29,9 +29,8 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
   },
   sourceContext: {
     git: {
-      branch: "main",
+      branch: "refs/heads/main",
       repoUrl: gitOrigin,
-      repoDir: ""
     }
   }
 });
