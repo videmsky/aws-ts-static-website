@@ -26,6 +26,9 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
   stack: stack,
   operationContext: {
     preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
+		environmentVariables: {
+			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
+		},		
 		options: {
 			skipInstallDependencies: true,
 		},
@@ -34,7 +37,6 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
     git: {
       branch: "refs/heads/main",
       repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
-			repoDir: "aws-ts-static-website",
     }
   }
 });

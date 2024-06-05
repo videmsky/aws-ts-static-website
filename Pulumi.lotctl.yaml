@@ -3,6 +3,8 @@ config:
   aws-ts-static-website:errorDocument: error.html
   aws-ts-static-website:indexDocument: index.html
   aws-ts-static-website:path: ./www
+  aws-ts-static-website:pulumiAccessToken:
+    secure: AAABADXE/rOgE/ry18kCwPj7WaWTdWXdTbcudq+SNX8jmH9/TDravylx/xLCRklHvuZ1ZQ/xjmxY4kpmZw5qjWUxHvY3RPVf6yaoug==
   aws-ts-static-website:subdomain: www
   aws:region: us-west-2
 environment:
