@@ -45,7 +45,7 @@ const driftSchedule = new service.DriftSchedule("driftSchedule", {
   organization: org,
   project: project,
   stack: stack,
-  scheduleCron: "0 * * * *",
+  scheduleCron: "0 */4 * * *",
   autoRemediate: true
 }, {dependsOn: [deploymentSettings]})
 
@@ -53,7 +53,7 @@ const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
   organization: org,
   project: project,
   stack: stack,
-  timestamp: "2024-06-06T00:00:00Z"
+  timestamp: "2024-06-09T00:00:00Z"
 }, {dependsOn: [deploymentSettings]})
 
 // Create an S3 bucket and configure it as a website.
