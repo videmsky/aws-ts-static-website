@@ -20,41 +20,41 @@ const domain = config.require("domain");
 const subdomain = config.require("subdomain");
 const domainName = `${subdomain}.${domain}`;
 
-const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
-  organization: org,
-  project: project,
-  stack: stack,
-  operationContext: {
-    preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
-		environmentVariables: {
-			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
-		},		
-		options: {
-			skipInstallDependencies: true,
-		},
-  },
-  sourceContext: {
-    git: {
-      branch: "refs/heads/main",
-      repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
-    }
-  }
-});
+// const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
+//   organization: org,
+//   project: project,
+//   stack: stack,
+//   operationContext: {
+//     preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
+// 		environmentVariables: {
+// 			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
+// 		},		
+// 		options: {
+// 			skipInstallDependencies: true,
+// 		},
+//   },
+//   sourceContext: {
+//     git: {
+//       branch: "refs/heads/main",
+//       repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
+//     }
+//   }
+// });
 
-const driftSchedule = new service.DriftSchedule("driftSchedule", {
-  organization: org,
-  project: project,
-  stack: stack,
-  scheduleCron: "0 */4 * * *",
-  autoRemediate: true
-}, {dependsOn: [deploymentSettings]})
+// const driftSchedule = new service.DriftSchedule("driftSchedule", {
+//   organization: org,
+//   project: project,
+//   stack: stack,
+//   scheduleCron: "0 */4 * * *",
+//   autoRemediate: true
+// }, {dependsOn: [deploymentSettings]})
 
-const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
-  organization: org,
-  project: project,
-  stack: stack,
-  timestamp: "2024-06-16T00:00:00Z"
-}, {dependsOn: [deploymentSettings]})
+// const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
+//   organization: org,
+//   project: project,
+//   stack: stack,
+//   timestamp: "2024-06-16T00:00:00Z"
+// }, {dependsOn: [deploymentSettings]})
 
 // Create an S3 bucket and configure it as a website.
 const bucket = new aws.s3.Bucket("lotctl-bucket", {
