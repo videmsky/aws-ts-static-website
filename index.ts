@@ -53,7 +53,7 @@ const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
   organization: org,
   project: project,
   stack: stack,
-  timestamp: "2024-07-13T00:00:00Z"
+  timestamp: "2024-08-23T00:00:00Z"
 }, {dependsOn: [deploymentSettings]})
 
 // Create an S3 bucket and configure it as a website.
