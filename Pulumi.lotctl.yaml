@@ -8,4 +8,4 @@ config:
   aws-ts-static-website:subdomain: pul
   aws:region: us-west-2
 environment:
-  - lotctl
+  - lotctl-aws
