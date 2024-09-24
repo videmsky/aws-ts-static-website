@@ -15,7 +15,8 @@ jobs:
       - uses: actions/setup-node@v4.0.2
         with:
           node-version-file: package.json
-      - run: npm install
+          cache: 'npm'
+      - run: npm ci
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
