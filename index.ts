@@ -2,7 +2,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as synced_folder from "@pulumi/synced-folder";
 import * as service from "@pulumi/pulumiservice";
-import { local } from "@pulumi/command";
+// import { local } from "@pulumi/command";
 
 const org = pulumi.getOrganization()
 const project = pulumi.getProject()
