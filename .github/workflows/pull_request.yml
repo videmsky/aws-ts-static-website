@@ -9,7 +9,7 @@ permissions:
 jobs:
   preview:
     name: Preview
-    runs-on: self-hosted
+    runs-on: arc-runner-set
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4.0.2
