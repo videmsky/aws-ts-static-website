@@ -1,15 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
 import * as synced_folder from "@pulumi/synced-folder";
-import * as service from "@pulumi/pulumiservice";
-import { local } from "@pulumi/command";
-
-const org = pulumi.getOrganization()
-const project = pulumi.getProject()
-const stack = pulumi.getStack()
-// const gitOrigin = new local.Command("git_origin", {
-//   create: 'git config --get remote.origin.url',
-// }).stdout
+import "./deploy";
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
@@ -19,56 +11,26 @@ const errorDocument = config.get("errorDocument") || "error.html";
 const domain = config.require("domain");
 const subdomain = config.require("subdomain");
 const domainName = `${subdomain}.${domain}`;
+const name = config.require("name");
 
-const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
-  organization: org,
-  project: project,
-  stack: stack,
-  operationContext: {
-    preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
-		environmentVariables: {
-			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
-		},		
-		options: {
-			skipInstallDependencies: true,
-		},
-  },
-  sourceContext: {
-    git: {
-      branch: "refs/heads/main",
-      repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
-    }
-  }
-});
-
-const driftSchedule = new service.DriftSchedule("driftSchedule", {
-  organization: org,
-  project: project,
-  stack: stack,
-  scheduleCron: "0 */4 * * *",
-  autoRemediate: true
-}, {dependsOn: [deploymentSettings]})
-
-const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
-  organization: org,
-  project: project,
-  stack: stack,
-  timestamp: "2024-09-12T00:00:00Z"
-}, {dependsOn: [deploymentSettings]})
+const baseTags = {
+	owner: name,
+	PulumiStack: pulumi.getStack(),
+};
 
 // Create an S3 bucket and configure it as a website.
-const bucket = new aws.s3.Bucket("lotctl-bucket", {
+const bucket = new aws.s3.Bucket(`${name}-bucket`, {
 	website: {
 		indexDocument: indexDocument,
 		errorDocument: errorDocument,
 	},
 	tags: {
-		owner: "laci",
+		...baseTags
 	}
 });
 
 // Configure ownership controls for the new S3 bucket
-const ownershipControls = new aws.s3.BucketOwnershipControls("lotctl-ownership-controls", {
+const ownershipControls = new aws.s3.BucketOwnershipControls(`${name}--ownership-controls`, {
 	bucket: bucket.bucket,
 	rule: {
 		objectOwnership: "ObjectWriter",
@@ -76,13 +38,13 @@ const ownershipControls = new aws.s3.BucketOwnershipControls("lotctl-ownership-c
 });
 
 // Configure public ACL block on the new S3 bucket
-const publicAccessBlock = new aws.s3.BucketPublicAccessBlock("lotctl-public-access-block", {
+const publicAccessBlock = new aws.s3.BucketPublicAccessBlock(`${name}-public-access-block`, {
 	bucket: bucket.bucket,
 	blockPublicAcls: false,
 });
 
 // Use a synced folder to manage the files of the website.
-const bucketFolder = new synced_folder.S3BucketFolder("lotctl-bucket-folder", {
+const bucketFolder = new synced_folder.S3BucketFolder(`${name}-bucket-folder`, {
 	path: path,
 	bucketName: bucket.bucket,
 	acl: "public-read",
@@ -92,9 +54,12 @@ const bucketFolder = new synced_folder.S3BucketFolder("lotctl-bucket-folder", {
 const zone = aws.route53.getZoneOutput({ name: domain });
 
 // Provision a new ACM certificate.
-const certificate = new aws.acm.Certificate("certificate", {
+const certificate = new aws.acm.Certificate(`${name}-certificate`, {
 		domainName: domainName,
 		validationMethod: "DNS",
+		tags: {
+			...baseTags
+		}
 	},
 	{
 		// ACM certificates must be created in the us-east-1 region.
@@ -106,7 +71,7 @@ const certificate = new aws.acm.Certificate("certificate", {
 
 // Validate the ACM certificate with DNS.
 const validationOption = certificate.domainValidationOptions[0];
-const certificateValidation = new aws.route53.Record("certificate-validation", {
+const certificateValidation = new aws.route53.Record(`${name}-certificate-validation`, {
 	name: validationOption.resourceRecordName,
 	type: validationOption.resourceRecordType,
 	records: [ validationOption.resourceRecordValue ],
@@ -115,7 +80,7 @@ const certificateValidation = new aws.route53.Record("certificate-validation", {
 });
 
 // Create a CloudFront CDN to distribute and cache the website.
-const cdn = new aws.cloudfront.Distribution("lotctl-cdn", {
+const cdn = new aws.cloudfront.Distribution(`${name}-cdn`, {
 	enabled: true,
 	origins: [{
 		originId: bucket.arn,
@@ -168,6 +133,9 @@ const cdn = new aws.cloudfront.Distribution("lotctl-cdn", {
 		cloudfrontDefaultCertificate: false,
 		acmCertificateArn: certificate.arn,
 		sslSupportMethod: "sni-only",
+	},
+	tags: {
+		...baseTags
 	},
 });
 
