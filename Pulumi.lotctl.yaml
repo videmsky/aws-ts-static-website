@@ -2,6 +2,7 @@ config:
   aws-ts-static-website:domain: pulumi-ce.team
   aws-ts-static-website:errorDocument: error.html
   aws-ts-static-website:indexDocument: index.html
+  aws-ts-static-website:name: lotctl
   aws-ts-static-website:path: ./www
   aws-ts-static-website:pulumiAccessToken:
     secure: AAABAD6gP82Ps7URGzAP+eVOnKEsMfHU7AJeZ8XbJ+ljSutqZXYqVBPHevON6ImPH+xaxJvoha+7Cw326WhhDNJVijTINzUD/gkeuQ==
