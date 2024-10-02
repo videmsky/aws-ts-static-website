@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+    user: root # Ensures Jenkins has permissions to use mounted volumes on macOS
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # Allows Jenkins to interact with Docker on macOS
+      - /usr/local/bin/docker:/usr/bin/docker # Mounts Docker binary to enable Docker CLI inside Jenkins
+  # agent:
+  #   image: jenkins/ssh-agent:jdk11
+  #   privileged: true
+  #   user: root
+  #   container_name: agent
+  #   expose:
+  #     - 22
+  #   environment:
+  #     - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDBKCd06/L9GH3r2yHEIHV8DjVgq9F51b1OPnfO27H+Wg9BI30aZyVNYwnj0YCfeoriRZhBVssKJlg2xvYYILIiJ9vkm7RuqOXhYuYdU7wNMTBSby43pmQgOBEJp0XcIZWCcgZLF5eliFLjAFTpm6f7VHaCnyVdsESzLZW4c3IUGzmo8FkmSAlYLDFkeQMqvT/zn2AuO3BejI9Tr8+9QkLLJ43ziGJuylfGg4Th1oAQAcIvSWXmpn0JZdk5RjiC/22TQk9TJtpx35YVfkfrhiv0c4nNYwj3g4InpbNdyCfo32n5+vRF2q7D+y6yHqF+Nlpwn8HGTDaxxHGMN7fXBiwf7y2JQmj1urzFd5SMLgostZQZGzQzcEEiYIf3iRWY8ltD7pjkff75Sbab3rcAc7RKa96ZPNnhb9gBSc5RjmysMIqYtgeKLKEl07GvzN62NJKHbOqwDDHOt9kO9XeLrXx2NEiqdOpTWCW6IE7brYHqJPmY0D3KHaV0BJxNkTjVe6M= lotctl@Lacis-MacBook-Pro.local
+volumes:
+  jenkins_home:

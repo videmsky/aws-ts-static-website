@@ -7,6 +7,6 @@ config:
   aws-ts-static-website:pulumiAccessToken:
     secure: AAABAD6gP82Ps7URGzAP+eVOnKEsMfHU7AJeZ8XbJ+ljSutqZXYqVBPHevON6ImPH+xaxJvoha+7Cw326WhhDNJVijTINzUD/gkeuQ==
   aws-ts-static-website:subdomain: pul
-  aws:region: us-west-2
+  aws:region: us-east-1
 environment:
   - lotctl-aws

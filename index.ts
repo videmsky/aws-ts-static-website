@@ -29,6 +29,12 @@ const bucket = new aws.s3.Bucket(`${name}-bucket`, {
 	}
 });
 
+// const bucket = aws.s3.getBucket({
+// 	bucket: "lotctl-amazon-cloudfront-secure-stati-s3bucketroot-bnob9acwkncm",
+// });
+
+// pulumi import aws:s3/bucket:Bucket bucket lotctl-amazon-cloudfront-secure-stati-s3bucketroot-bnob9acwkncm
+
 // Configure ownership controls for the new S3 bucket
 const ownershipControls = new aws.s3.BucketOwnershipControls(`${name}--ownership-controls`, {
 	bucket: bucket.bucket,
@@ -71,6 +77,7 @@ const certificate = new aws.acm.Certificate(`${name}-certificate`, {
 
 // Validate the ACM certificate with DNS.
 const validationOption = certificate.domainValidationOptions[0];
+
 const certificateValidation = new aws.route53.Record(`${name}-certificate-validation`, {
 	name: validationOption.resourceRecordName,
 	type: validationOption.resourceRecordType,
@@ -152,6 +159,7 @@ const record = new aws.route53.Record(domainName, {
 		}
 	],
 }, { dependsOn: certificate });
+
 
 // Export the URLs and hostnames of the bucket and distribution.
 export const originURL = pulumi.interpolate`http://${bucket.websiteEndpoint}`;
