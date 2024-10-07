@@ -29,6 +29,30 @@ const bucket = new aws.s3.Bucket(`${name}-bucket`, {
 	}
 });
 
+// const bucket = new aws.s3.Bucket("bucket", {
+// 	arn: "arn:aws:s3:::lotctl-amazon-cloudfront-secure-stati-s3bucketroot-bnob9acwkncm",
+// 	bucket: "lotctl-amazon-cloudfront-secure-stati-s3bucketroot-bnob9acwkncm",
+// 	hostedZoneId: "Z3AQBSTGFYJSTF",
+// 	loggings: [{
+// 			targetBucket: "lotctl-amazon-cloudfront-secure-stati-s3bucketlogs-a6emhiiycmcg",
+// 			targetPrefix: "origin/",
+// 	}],
+// 	requestPayer: "BucketOwner",
+// 	serverSideEncryptionConfiguration: {
+// 			rule: {
+// 					applyServerSideEncryptionByDefault: {
+// 							sseAlgorithm: "AES256",
+// 					},
+// 			},
+// 	},
+// 	tags: {
+// 			Solution: "ACFS3",
+// 			owner: "lotctl",
+// 	},
+// }, {
+// 	protect: true,
+// });
+
 // const bucket = aws.s3.getBucket({
 // 	bucket: "lotctl-amazon-cloudfront-secure-stati-s3bucketroot-bnob9acwkncm",
 // });
