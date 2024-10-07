@@ -17,12 +17,12 @@ jobs:
       - uses: actions/setup-node@v4.0.2
         with:
           node-version-file: package.json
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.2
-        with:
-          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-          role-session-name: github-actions-session
-          aws-region: ${{ env.AWS_REGION }}
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v4.0.2
+      #   with:
+      #     role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+      #     role-session-name: github-actions-session
+      #     aws-region: ${{ env.AWS_REGION }}
       - run: npm install
       - uses: pulumi/actions@v5
         with:
