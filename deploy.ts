@@ -14,7 +14,7 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
   organization: org,
   project: project,
   stack: stack,
-  agentPoolId: "d808edb9-3109-4196-b359-fca8ce04d1b6",
+  // agentPoolId: "d808edb9-3109-4196-b359-fca8ce04d1b6",
   operationContext: {
     preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
 		environmentVariables: {
