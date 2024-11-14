@@ -14,6 +14,7 @@ const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-set
   organization: org,
   project: project,
   stack: stack,
+  agentPoolId: "lotctl",
   operationContext: {
     preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
 		environmentVariables: {
@@ -43,5 +44,5 @@ const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
   organization: org,
   project: project,
   stack: stack,
-  timestamp: "2024-10-10T00:00:00Z"
+  timestamp: "2024-11-17T00:00:00Z"
 }, {dependsOn: [deploymentSettings]})
