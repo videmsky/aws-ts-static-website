@@ -1,8 +1,16 @@
 import * as aws from "@pulumi/aws";
 import { PolicyPack, validateResourceOfType, ReportViolation } from "@pulumi/policy";
+import { policyManager } from "@pulumi/compliance-policy-manager";
 
 new PolicyPack("lotctl-aws", {
-	policies: [
+	policies:[
+		...policyManager.selectPolicies({
+			vendors: ["aws"],
+			services: ["s3", "acm", "route53","cloudfront"],
+			severities: ["medium", "high", "critical"],
+			topics: ["encryption"],
+			frameworks: ["pcidss"],
+		}, "advisory" ),
 		{
 			name: "required-owner-tag",
 			description: "A 'owner' tag is required.",
@@ -14,6 +22,12 @@ new PolicyPack("lotctl-aws", {
 			],
 		},
 	],
+});
+
+policyManager.displaySelectionStats({
+	displayGeneralStats: true,
+	displayModuleInformation: true,
+	displaySelectedPolicyNames: true,
 });
 
 function requireOwnerTag(tags: any, reportViolation: ReportViolation) {
