@@ -37,7 +37,7 @@ const driftSchedule = new service.DriftSchedule("driftSchedule", {
   project: project,
   stack: stack,
   scheduleCron: "0 */4 * * *",
-  autoRemediate: true
+  autoRemediate: false
 }, {dependsOn: [deploymentSettings]})
 
 const ttlSchedule = new service.TtlSchedule("ttlSchedule", {
