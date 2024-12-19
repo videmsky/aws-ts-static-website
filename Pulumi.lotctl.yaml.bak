@@ -4,11 +4,9 @@ config:
   aws-ts-static-website:indexDocument: index.html
   aws-ts-static-website:name: lotctl
   aws-ts-static-website:path: ./www
+  aws-ts-static-website:pulumiAccessToken:
+    secure: AAABAD6gP82Ps7URGzAP+eVOnKEsMfHU7AJeZ8XbJ+ljSutqZXYqVBPHevON6ImPH+xaxJvoha+7Cw326WhhDNJVijTINzUD/gkeuQ==
   aws-ts-static-website:subdomain: pul
   aws:region: us-east-1
-  pulumi:tags:
-    pulumi:template: static-website-aws-typescript
-  aws-ts-static-website:pulumiAccessToken:
-    secure: AAABAFMCeDWGj2q4k6vN+oO11gKTgC3jEfO1/YHTyhvgv1frAtxSwrhKXA57sKG6UYxLUQ9yJwFWop0qoJRClN/9PPC+oWAU35IIyg==
 environment:
   - lotctl-aws
