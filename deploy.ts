@@ -10,27 +10,27 @@ const stack = pulumi.getStack()
 //   create: 'git config --get remote.origin.url',
 // }).stdout
 
-// const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
-//   organization: org,
-//   project: project,
-//   stack: stack,
-//   // agentPoolId: "d808edb9-3109-4196-b359-fca8ce04d1b6",
-//   operationContext: {
-//     preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
-// 		environmentVariables: {
-// 			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
-// 		},		
-// 		options: {
-// 			skipInstallDependencies: true,
-// 		},
-//   },
-//   sourceContext: {
-//     git: {
-//       branch: "refs/heads/main",
-//       repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
-//     }
-//   }
-// });
+const deploymentSettings = new service.DeploymentSettings("lotctl-deployment-settings", {
+  organization: org,
+  project: project,
+  stack: stack,
+  // agentPoolId: "d808edb9-3109-4196-b359-fca8ce04d1b6",
+  operationContext: {
+    preRunCommands: ["curl -o- -L https://yarnpkg.com/install.sh | bash", "yarn install"],
+		environmentVariables: {
+			PULUMI_ACCESS_TOKEN: config.requireSecret("pulumiAccessToken"),
+		},		
+		options: {
+			skipInstallDependencies: true,
+		},
+  },
+  sourceContext: {
+    git: {
+      branch: "refs/heads/main",
+      repoUrl: "https://github.com/videmsky/aws-ts-static-website.git",
+    }
+  }
+});
 
 const driftSchedule = new service.DriftSchedule("driftSchedule", {
   organization: org,
