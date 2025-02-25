@@ -1,0 +1,14 @@
+config:
+  aws:region: us-east-1
+  aws:s3UsePathStyle: "true"
+  aws:endpoints:
+    - acm: http://localhost:4566
+    - s3: http://localhost:4566
+  aws-ts-static-website:pulumiAccessToken:
+    secure: AAABAMecRHW0L1DEEhEdxr4LEMnhgCPwtCC1+BE3MamZgdQKn0wsLfBASkaJKicbHBsqEZJk536IJ/c4y6Wm627qNvwX/zDlUhNXvA==
+  aws-ts-static-website:domain: pulumi-ce.team
+  aws-ts-static-website:errorDocument: error.html
+  aws-ts-static-website:indexDocument: index.html
+  aws-ts-static-website:name: lotctl
+  aws-ts-static-website:path: ./www
+  aws-ts-static-website:subdomain: pul
